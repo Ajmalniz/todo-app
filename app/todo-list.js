@@ -1,9 +1,24 @@
-export default function TodoList(){
-    return(
-<ul class="list-none pl-6">
-        <li class="mb-2  flex justify-center">Todo 1</li>
-        <li class="mb-2 flex justify-center">Todo 2</li>
-        <li class="mb-2 flex justify-center">Todo 3</li>
+import Todo from "./todo";
+
+const getTodos = async () => {
+  let todos = await fetch("http://localhost:3001/api/todo/list");
+  return todos.json();
+};
+
+export default async function TodoList() {
+  const { todos } = await getTodos();
+
+  return (
+    <div>
+      <ul style={{ listStyleType: "none", padding: 0 }}>
+        {todos.map((t) => {
+          return (
+            <li key={t.id} class="mb-2  flex justify-center">
+              <Todo todo={t} />
+            </li>
+          );
+        })}
       </ul>
-    )
+    </div>
+  );
 }
